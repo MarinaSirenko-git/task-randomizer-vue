@@ -3,6 +3,7 @@
   import {ref} from 'vue'
   // constants
   const STORAGE_KEY = 'ranomizer-tasks';
+  const w = window as Window & typeof globalThis
 
   // types
   interface TaskData {
@@ -14,6 +15,7 @@
 
   // state
   const inputValue = ref('')
+  const bgReady = ref(false);
   const tasks = reactive<TaskData[]>([])
 
   const doneTasks = computed(() => {
@@ -42,7 +44,7 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTasks));
   }
 
-  // vue hooks and properties
+
   onMounted(()=>{
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
@@ -51,6 +53,16 @@
     if (!Array.isArray(stored)) return
 
     if(stored) tasks.splice(0, tasks.length, ...stored);
+
+    // when browser finish main tasks bgReady will be changed and user can see images on background
+    const idle = (cb: () => void) =>
+      "requestIdleCallback" in window
+        ? w.requestIdleCallback(cb)
+        : setTimeout(cb, 300);
+
+      idle(() => {
+        bgReady.value = true;
+      });
   })
 
   watch(tasks, () => {
@@ -160,6 +172,15 @@
     grid-template-rows: repeat(3, 33%);
     width: 100%;
     height: 100%;
+    background: #f3f3f3;
+  }
+
+  .bg {
+    background: #f3f3f3;
+  }
+
+  .bg--ready {
+    background: transparent;
   }
 
   .bg__item {
