@@ -62,15 +62,15 @@
 <template>
   <main class="main">
     <div class="bg">
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/nik-9SU2o4qwlmI-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-2zvzlI95Svs-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-P2sNmlTo9Z8-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-pqLONJknUcM-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/nik-9SU2o4qwlmI-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-UIftHKAl6nE-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-2zvzlI95Svs-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-UIftHKAl6nE-unsplash.jpg"/>
-      <img class="bg__item" alt="" aria-hidden="true" role="presentation" src="./assets/public-domain-vectors-pqLONJknUcM-unsplash.jpg"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/nik-9SU2o4qwlmI-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-2zvzlI95Svs-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-P2sNmlTo9Z8-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-pqLONJknUcM-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/nik-9SU2o4qwlmI-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-UIftHKAl6nE-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-2zvzlI95Svs-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-UIftHKAl6nE-unsplash.webp"/>
+      <img class="bg__item" alt="" aria-hidden="true" role="presentation" loading="lazy" decoding="async" fetchpriority="low" src="./assets/public-domain-vectors-pqLONJknUcM-unsplash.webp"/>
     </div>
     <section class="content">
       <header class="content__header">
