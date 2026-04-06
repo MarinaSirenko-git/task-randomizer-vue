@@ -1,8 +1,13 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { useBackgroundStore } from '@/stores/backgroundStore';
+  const backgroundStore = useBackgroundStore();
+</script>
 
 <template>
   <div class="bg">
     <img
+      v-for="item in backgroundStore.images" 
+      :key="item.id"
       class="bg__item"
       alt=""
       aria-hidden="true"
@@ -10,87 +15,7 @@
       loading="lazy"
       decoding="async"
       fetchpriority="low"
-      src="../../assets/nik-9SU2o4qwlmI-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-2zvzlI95Svs-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-P2sNmlTo9Z8-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-pqLONJknUcM-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/nik-9SU2o4qwlmI-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-UIftHKAl6nE-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-2zvzlI95Svs-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-UIftHKAl6nE-unsplash.webp"
-    />
-    <img
-      class="bg__item"
-      alt=""
-      aria-hidden="true"
-      role="presentation"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      src="../../assets/public-domain-vectors-pqLONJknUcM-unsplash.webp"
+      :src="item.path"
     />
   </div>
 </template>

@@ -10,7 +10,7 @@ import ControllersList from './components/Controllers/ControllersList.vue'
 import MainBg from './components/Bg/MainBg.vue'
 
 // constants
-import { STORAGE_KEY } from './constants'
+import { STORAGE_KEY } from './constants/constants'
 const w = window as Window & typeof globalThis
 
 // types
