@@ -53,11 +53,17 @@ const handleSubmit = (e: SubmitEvent) => {
   box-sizing: border-box;
 }
 
+@media (max-width: 767px) {
+  .content__form {
+    padding: 10px;
+  }
+}
+
 .form__input {
   margin: 0;
   width: 100%;
   height: 30px;
-  padding: 4px 4px 4px 10px;
+  padding: 10px 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-family: 'Caveat', cursive;

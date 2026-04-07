@@ -2,24 +2,30 @@
   import type { TaskData } from '../../types/task'
 
     const props = defineProps<{
-        task: TaskData
+        task: TaskData,
+        isHighlite?: Boolean
     }>();
 
     const emit = defineEmits<{
-        delete: [id: string]
+        delete: [id: string],
+        toggle: [id: string]
     }>()
 
     const handleDelete = (id: string) => {
         emit('delete', id)
     }
 
+    const handleToggle = (id:string) => {
+        emit('toggle', id)
+    }
+
 </script>
 
 <template>
     <li class="task-list__item">
-    <span class="task-list__item-num">{{ props.task.num }}</span>
+    <span class="task-list__item-num" :class="{ 'task-list__item-num--highlited': isHighlite }">{{ props.task.num }}</span>
     <label class="task-list__label">
-        <input class="task-list__checkbox" type="checkbox" v-model="props.task.done" />
+        <input class="task-list__checkbox" type="checkbox" :checked="props.task.done" @change="handleToggle(props.task.id)" />
         <span class="task-list__item-text" :class="{ 'task-list__text--done': task.done }">
         {{ props.task.text }}
         </span>
@@ -67,6 +73,10 @@
     padding: 5px 10px;
     border-radius: 5px;
     margin-right: 15px;
+  }
+
+  .task-list__item-num--highlited {
+    background-color: orange;
   }
 
   .task-list__item-text {

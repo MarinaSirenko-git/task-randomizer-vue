@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import Counter from './Counter.vue'
+import { storeToRefs } from 'pinia'
+import { useToDoStore } from '@/stores/toDoStore'
+const { tasksCount, undoneTasksCount, doneTasksCount } = storeToRefs(useToDoStore())
 </script>
 
 <template>
   <section class="state">
     <ul class="state-list">
-      <Counter name="Total:" count="5" />
-      <Counter name="Active:" count="5" />
-      <Counter name="Completed:" count="5" />
-      <Counter name="Progress:" count="5" />
-      <Counter name="Random:" count="5" />
+      <Counter name="Total:" :count="tasksCount" />
+      <Counter name="Active:" :count="undoneTasksCount" />
+      <Counter name="Completed:" :count="doneTasksCount" />
     </ul>
   </section>
 </template>
@@ -26,5 +27,11 @@ import Counter from './Counter.vue'
 .state-list {
   display: flex;
   justify-content: space-between;
+}
+
+@media (min-width: 300px) and (max-width: 1023px) {
+  .state-list {
+    display: none;
+  }
 }
 </style>

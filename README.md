@@ -1,48 +1,115 @@
-# to-do-randomizer
 
-This template should help get you started developing with Vue 3 in Vite.
+---
 
-## Recommended IDE Setup
+# Pinia: современный стейт-менеджер во Vue
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+**Pinia** — это современный стандарт управления состоянием во Vue-приложениях, пришедший на смену Vuex. Если Vuex был мощным, но громоздким «деревом», то Pinia — это легкий, интуитивный и модульный инструмент.
 
-## Recommended Browser Setup
+---
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## 🚀 Почему именно Pinia?
 
-## Type Support for `.vue` Imports in TS
+* **Легковесность:** Весит всего **1 кб** — практически не влияет на размер бандла и производительность.
+* **Типизация «из коробки»:** Не нужно вручную прописывать типы для state, getters и actions. Система автоматически выводит их, что делает разработку на TypeScript приятной.
+* **Удобный дебаг:** Полная поддержка **Vue DevTools** (как для Vue 2, так и для Vue 3). В сайдбаре появляется отдельная иконка, где можно инспектировать стейт и геттеры.
+* **Архитектура:** В отличие от единого дерева Vuex, Pinia строится на независимых хранилищах (entity-based). Это упрощает связку сторов и исключает конфликты при работе в большой команде.
+* **Интуитивность:** Дизайн API максимально приближен к привычному синтаксису Vue.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+> **Важно:** Pinia — это эксклюзив для экосистемы Vue. С React она не работает.
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Когда стоит подключать Pinia?
+Если в проекте до 10 компонентов, Pinia может быть излишней. Но если проект планирует расти — лучше внедрить её сразу. Рефакторинг с «прокидывания пропсов» (prop drilling) на стейт-менеджер в будущем обойдется дорого по времени.
 
-## Project Setup
+---
 
-```sh
-npm install
+## 🏗 Архитектура и настройка
+
+### Инициализация
+В файле `main.ts` подключаем API:
+```typescript
+import { createPinia } from 'pinia'
+const app = createApp(App)
+app.use(createPinia())
 ```
 
-### Compile and Hot-Reload for Development
+### Структура папок
+Рекомендуется создавать папку `store/`, где под каждую сущность выделяется отдельный файл.
+* **Нейминг:** `UserStore.ts`, `TaskStore.ts`.
+* **Константы:** Экспортируемая переменная всегда начинается с `use` (например, `useTaskStore`). Это следование паттерну Hooks и Composition API.
 
-```sh
-npm run dev
+### Особенности инициализации
+Стор в Pinia **ленивый**. Он не создается в момент определения через `defineStore`, а инициализируется только тогда, когда впервые вызываешь функцию `use...Store()` в компоненте.
+
+---
+
+## 💎 Основные элементы стора
+
+### 1. State
+Здесь хранятся данные. Если используются не примитивы, а ссылочные структуры, обязательно добавляем типы:
+```typescript
+import type { TaskData } from '@/types/task'
+
+state: () => ({
+  tasks: [] as TaskData[],
+})
 ```
 
-### Type-Check, Compile and Minify for Production
+### 2. Getters
+Это аналоги `computed` свойств.
+* **Чистые функции:** Геттеры не должны вызывать сайд-эффекты.
+* **Доступ к стейту:** Можно использовать стрелочную функцию (принимает `state` аргументом) или обычную (доступ к стейту через `this`).
+* **Динамические геттеры:** Могут принимать параметры, возвращая функцию, например:
+    `const getById = (state) => (id) => state.tasks.find(t => t.id === id)`
 
-```sh
-npm run build
+### 3. Actions
+Аналоги `methods`. Могут быть как синхронными, так и асинхронными. В них инкапсулируется вся бизнес-логика и запросы к API.
+
+---
+
+## 💡 Продвинутые техники
+
+### Реактивность и деструктуризация
+Если просто деструктурировать стор, реактивность пропадет. Чтобы этого избежать, используй `storeToRefs`:
+```typescript
+import { storeToRefs } from 'pinia'
+const store = useTaskStore()
+const { tasks, completedCount } = storeToRefs(store) // Реактивность сохранена
+const { addTask } = store // Экшены можно деструктурировать просто так
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Массовые обновления ($patch)
+Для атомарного обновления нескольких полей или сложных вложенных структур используй `$patch`. Это удобнее для логирования в DevTools.
 
-```sh
-npm run lint
-```
+### Сброс состояния ($reset)
+Метод `$reset()` откатывает стор к начальному состоянию. 
+* *Совет:* Если нужно очистить только часть данных, лучше делать это точечно, чтобы не затереть полезный контекст.
+
+### Переиспользование логики из одного стора в другом
+Легко. Тот же принцип что и получение данных из стора в компоненте.
+
+### Подписки на изменения
+* $subscribe: Позволяет следить за состоянием всего стора сразу (аналог watch, но эффективнее для целого объекта).
+* $onAction: Позволяет «подписаться» на вызов экшена (удобно для логирования или аналитики).
+
+### Pinia расширяема
+Pinia поддерживает плагины. Самый популярный — pinia-plugin-persistedstate. Он автоматически сохраняет выбранные сторы в localStorage и восстанавливает их после перезагрузки страницы одной строчкой конфига.
+
+### Прямые мутации разрешены
+В Pinia стейт можно изменять напрямую без экшенов, если логика простая. Это не ломает реактивность и не считается «грехом», и это отличие от Vuex.
+
+### Setup Stores vs Option Stores (в текущем проекте)
+Вместо объекта можно передавать функцию. В ней ref() — это state, computed() — это getters, а function() — это actions.
+
+### SSR и Гидратация
+Pinia отлично работает с Server Side Rendering. 
+> **Гидратация** — это процесс «оживления» серверной разметки, когда клиентский JS подхватывает состояние, пришедшее с сервера, и делает страницу интерактивной без лишних перезапросов.
+
+---
+
+## 🧩 Best Practices: Стор или Композабл?
+
+* **Pinia:** Используй для глобального состояния и доменной логики (данные пользователя, корзина, задачи), которые нужны разным частям приложения.
+* **Composables:** Выноси сюда переиспользуемую механику (логика скролла, работа с таймерами, вспомогательные утилиты).
+* **Local State:** Если данные нужны только одному компоненту и его дочерним элементам (и они их не мутируют), оставь их в `ref()` внутри компонента.

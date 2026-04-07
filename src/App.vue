@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, reactive, watch } from 'vue'
-import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 // components
 import AddForm from './components/Forms/AddForm.vue'
@@ -9,52 +9,20 @@ import ToDoList from './components/Tasks/ToDoList.vue'
 import ControllersList from './components/Controllers/ControllersList.vue'
 import MainBg from './components/Bg/MainBg.vue'
 
-// constants
-import { STORAGE_KEY } from './constants/constants'
-const w = window as Window & typeof globalThis
+// store
+import { useToDoStore } from './stores/toDoStore'
+const toDoStore = useToDoStore()
+const { tasks } = storeToRefs(toDoStore)
+const { addTask, getTasks } = toDoStore
 
-// types
-import type { TaskData } from './types/task'
-
-// state
-const bgReady = ref(false)
-const tasks = reactive<TaskData[]>([])
-
-// logic
-function addTask(value: string) {
-  tasks.push({
-    id: crypto.randomUUID(),
-    num: tasks.length + 1,
-    text: value,
-    done: false,
-  } satisfies TaskData)
-}
+import { useBackgroundStore } from './stores/backgroundStore'
+const { waitContent } = useBackgroundStore()
 
 onMounted(() => {
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) return
-
-  const stored = JSON.parse(raw)
-  if (!Array.isArray(stored)) return
-
-  if (stored) tasks.splice(0, tasks.length, ...stored)
-
-  // when browser finish main tasks bgReady will be changed and user can see images on background
-  const idle = (cb: () => void) =>
-    'requestIdleCallback' in window ? w.requestIdleCallback(cb) : setTimeout(cb, 300)
-
-  idle(() => {
-    bgReady.value = true
-  })
+  getTasks()
+  waitContent()
 })
 
-watch(
-  tasks,
-  () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-  },
-  { deep: true },
-)
 </script>
 
 <template>
@@ -73,6 +41,24 @@ watch(
 :global(html, body, main) {
   margin: 0;
   height: 100%;
+}
+
+.desktop {
+  display: inline;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: inline;
+  }
 }
 
 .main {
@@ -99,8 +85,8 @@ watch(
 
 @media (max-width: 767px) {
   .content {
-    width: 90%;
-    height: 90%;
+    width: 96%;
+    height: 98%;
   }
 
   .content__header {
