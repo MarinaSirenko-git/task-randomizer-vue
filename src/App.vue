@@ -22,7 +22,6 @@ onMounted(() => {
   getTasks()
   waitContent()
 })
-
 </script>
 
 <template>
@@ -38,7 +37,9 @@ onMounted(() => {
 </template>
 
 <style>
-:global(html, body, main) {
+html,
+body,
+main {
   margin: 0;
   height: 100%;
 }
