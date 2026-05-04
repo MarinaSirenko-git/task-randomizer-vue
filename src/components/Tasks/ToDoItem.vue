@@ -64,6 +64,9 @@
     gap: 10px;
     width: 90%;
     box-sizing: border-box;
+    flex: 1;
+    min-width: 0;
+    padding: 0 10px 0 0;
   }
 
   .task-list__item-num {
@@ -73,6 +76,7 @@
     padding: 5px 10px;
     border-radius: 5px;
     margin-right: 15px;
+    flex: none;
   }
 
   .task-list__item-num--highlited {
@@ -97,6 +101,7 @@
     background: none;
     cursor: pointer;
     margin-left: auto;
+    flex: none;
   }
 
   .task-list__item-checkbox {
